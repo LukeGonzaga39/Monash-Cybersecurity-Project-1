@@ -5,7 +5,41 @@ The files in this repository were used to configure the network depicted below.
 ![](https://github.com/LukeGonzaga39/CybersecurityProjects/blob/main/Diagrams/ElkStackDiagram.png)
 
 These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. Alternatively, select portions of the playbook file may be used to install only certain pieces of it, such as Filebeat.
-  
+#### Playbook 1: ConfigureWebServersWithDVWA.yml
+```
+---
+- name: Config Web VM with Docker (My First Playbook)
+  hosts: webservers
+  become: true
+  tasks:
+    - name: docker.io
+      apt:
+        update_cache: yes
+        name: docker.io
+        state: present
+
+    - name: Install pip3
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Install Docker python module
+      pip:
+        name: docker
+        state: present
+
+    - name: download and launch a docker web container
+      docker_container:
+        name: dvwa
+        image: cyberxsecurity/dvwa
+
+    - name: Enable docker service
+      systemd:
+        name: docker
+        enabled: yes
+  ```
+        
+        
   https://github.com/LukeGonzaga39/CybersecurityProjects/blob/main/Ansible/ConfigureWebServersWithDVWA.yml
   https://github.com/LukeGonzaga39/CybersecurityProjects/blob/main/Ansible/elk-playbook.yml
   https://github.com/LukeGonzaga39/CybersecurityProjects/blob/main/Ansible/filebeat-playbook.txt
